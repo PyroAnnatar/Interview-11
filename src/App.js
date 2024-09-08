@@ -16,22 +16,29 @@ const BuggyButtons = () => {
       <div
         style={{
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
         <div
           style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
         >
           {IDs.map((item) => {
-            <div
-              key={item}
-              style={{
-                marginRight: 10
-              }}
-              id={item}
-            >
-              <BuggyButton openCount={openCount} setOpenCount={setOpenCount} />
-            </div>;
+            // 1. Missing return
+            return (
+              <div
+                key={item}
+                style={{
+                  marginRight: 10,
+                }}
+                id={item}
+              >
+                {/* Best practice (?) to pass down a callback function instead of the state setter */}
+                <BuggyButton
+                  openCount={openCount}
+                  setOpenCount={setOpenCount}
+                />
+              </div>
+            );
           })}
         </div>
         <div style={{ alignSelf: "center", marginTop: 20 }}>
@@ -41,8 +48,8 @@ const BuggyButtons = () => {
     </>
   );
 };
-
-const BuggyButton = (openCount, setOpenCount) => {
+// 2. Passed as argument not deconstructed
+const BuggyButton = ({ openCount, setOpenCount }) => {
   const [isOpen, setIsOpen] = useState(false);
   return isOpen ? (
     <img
